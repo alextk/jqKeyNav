@@ -25,7 +25,7 @@
     initialize: function(options) {      
       options = options || {};
       
-      this.scope = options.scope || null;
+      this.scope = options.context || options.scope || null;
       // select only defined handlers that are functions
       var handlers = {};
       [ 'enter', 'left', 'right', 'up', 'down', 'tab', 'esc', 'pageUp', 'pageDown', 'del', 'home', 'end' ]

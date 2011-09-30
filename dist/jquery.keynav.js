@@ -2,14 +2,14 @@
 * jqKeyNav - jQuery plugin for keyboard navigation events binding
 *
 * Version: 0.0.1
-* Build: 3
+* Build: 4
 * Copyright 2011 Alex Tkachev
 *
 * Dual licensed under MIT or GPLv2 licenses
 *   http://en.wikipedia.org/wiki/MIT_License
 *   http://en.wikipedia.org/wiki/GNU_General_Public_License
 *
-* Date: 10/09/2011 15:11:57
+* Date: 30/09/2011 11:52:00
 */
 
 (function($) {
@@ -39,7 +39,7 @@
     initialize: function(options) {      
       options = options || {};
       
-      this.scope = options.scope || null;
+      this.scope = options.context || options.scope || null;
       // select only defined handlers that are functions
       var handlers = {};
       [ 'enter', 'left', 'right', 'up', 'down', 'tab', 'esc', 'pageUp', 'pageDown', 'del', 'home', 'end' ]
