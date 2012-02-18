@@ -15,6 +15,7 @@
     27: "esc",
     9 : "tab"
   };
+  //also 'any' handler is supported which will be invoked on any key out of the above map
   
   var KeyNavClass = function() {
     this.initialize.apply(this, arguments);
@@ -28,10 +29,11 @@
       this.scope = options.context || options.scope || null;
       // select only defined handlers that are functions
       var handlers = {};
-      [ 'enter', 'left', 'right', 'up', 'down', 'tab', 'esc', 'pageUp', 'pageDown', 'del', 'home', 'end' ]
-                        .select(function(handlerName){ return $.isFunction(options[handlerName]);  })
-                        .each(function(handlerName){ handlers[handlerName] = options[handlerName]; });
+      var handlerNames = Object.keys(keyToHandlerMapping).collect(function(keyCode) { return keyToHandlerMapping[keyCode] });
+      handlerNames.select(function(handlerName){ return $.isFunction(options[handlerName]);  })
+                  .each(function(handlerName){ handlers[handlerName] = options[handlerName]; });
       this.handlers = handlers;
+      if($.isFunction(options.any)) this.anyHandler = options.any;
     },
 
     relay : function(e){
@@ -39,12 +41,14 @@
 
       var keyCode = e.which;
       var handlerName = keyToHandlerMapping[keyCode];
-      if(handlerName && self.handlers[handlerName]){
-        var func = self.handlers[handlerName];
-        var scope = self.scope || func;
-        if(func.call(scope, e) !== true){ //invoke handler and cancel event unless true is returned
-          e.stopEvent();
-        }
+      if(handlerName){
+        [self.handlers[handlerName], self.anyHandler].select(function(func){ return $.isFunction(func)}).each(function(func){
+          var scope = self.scope || func;
+          if(func.call(scope, e) !== true){ //invoke handler and cancel event unless true is returned
+            e.stopEvent();
+          }
+        });
+
       }
     },
 

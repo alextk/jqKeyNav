@@ -23,6 +23,9 @@ describe("KeyNav", function() {
       input1.keyNav({
         enter: function(){
           input1Triggers.enter = true;
+        },
+        any: function(){
+          input1Triggers.any = true;
         }
       });
 
@@ -53,6 +56,16 @@ describe("KeyNav", function() {
     it('it should invoke enter handler when enter key pressed', function(){
       input1.trigger($.extend(new jQuery.Event('keydown'), {which: 13}));
       expect(input1Triggers.enter).toBeTruthy();
+    });
+
+    it('it should invoke any handler when enter key pressed', function(){
+      input1.trigger($.extend(new jQuery.Event('keydown'), {which: 13}));
+      expect(input1Triggers.any).toBeTruthy();
+    });
+
+    it('it should invoke any handler when tab key pressed', function(){
+      input1.trigger($.extend(new jQuery.Event('keydown'), {which: 9}));
+      expect(input1Triggers.any).toBeTruthy();
     });
 
   });
